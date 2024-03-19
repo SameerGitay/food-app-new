@@ -1,13 +1,17 @@
 import React from 'react'
 
-export default function FoodCard() {
+export default function FoodCard({itemName,itemImage,itemDescription,itemOptions}) {
+    delete itemOptions._id
+    const optionKeys =Object.keys(itemOptions)
+    
+    
     return (
         <>
             <div className="card mt-4" style={{ "width": "18rem" }}>
-                <img className="card-img-top" src="https://source.unsplash.com/random/300x300/?donut" alt="Card image cap" />
+                <img className="card-img-top" src={itemImage} alt="Card image cap" />
                 <div className="card-body">
-                    <h5 className="card-title">Card title</h5>
-                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <h5 className="card-title">{itemName}</h5>
+                    <p className="card-text">{itemDescription}</p>
                     <div className='container w-100'>
                         <select className='m-2 h-100 px-2 rounded'>
                             {
@@ -19,8 +23,11 @@ export default function FoodCard() {
                             }
                         </select>
                         <select className='m-2 h-100 px-2 rounded'>
-                            <option value="half">Half</option>
-                            <option value="full">Full</option>
+                            {
+                                optionKeys.map((key)=>{
+                                    return (<option key={key} value={key}>{key}</option>)
+                                })
+                            }
                         </select>
                         <div className='h-100 px-2 fs-5'>Total Price</div>
                     </div>
