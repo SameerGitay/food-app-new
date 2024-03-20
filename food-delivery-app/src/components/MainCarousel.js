@@ -1,14 +1,37 @@
 import React from 'react'
+import { useState } from 'react'
 
-export default function MainCarousel() {
+export default function MainCarousel({ resolveSearch }) {
+    const [searchTerm, setSearchTerm] = useState('')
+
+    const handleSubmit = (e) => {
+        resolveSearch(searchTerm)
+        e.preventDefault()
+    }
+
+    const handleChange = (e) => {
+        setSearchTerm(e.target.value)
+        if (e.target.value === "") {
+            resolveSearch(e.target.value)
+        }
+    }
+
+
     return (
-        <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel" style={{objectFit: "contain !important"}}>
+        <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel" style={{ objectFit: "contain !important" }}>
             <div className="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
             <div className="carousel-inner">
+                <div className='carousel-caption gofood-search'>
+                    <form className="d-flex" onSubmit={handleSubmit}>
+                        <input className="form-control me-2" type="search"
+                            placeholder="Search" aria-label="Search" value={searchTerm}
+                            onChange={handleChange} />
+                    </form>
+                </div>
                 <div className="carousel-item active carousel-item-style">
                     <img className="img-fluid" src="https://source.unsplash.com/random/900x700?burger" className="d-block w-100" alt="..." />
                     <div className="carousel-caption d-none d-md-block">

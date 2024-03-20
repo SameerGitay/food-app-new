@@ -45,5 +45,16 @@ body, html{
 }
 
 /* .carousel-item img{
-  max-height: 500px;
+  object-fit:cover;
 } */
+
+/* search on carousel */
+.gofood-search{
+  z-index: 100;
+}
+
+/* Food Cards */
+.gofood-card-img {
+  height: 300px;
+  object-fit:cover
+}

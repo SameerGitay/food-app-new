@@ -1,25 +1,26 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import CartModal from '../CartModal'
+import Cart from '../pages/Cart'
+import { CartContext } from '../App'
 
-export default function Header({resolveSearch}) {
-  const [searchTerm,setSearchTerm] = useState('')
-  
-  const handleSubmit = (e)=>{
-    resolveSearch(searchTerm)
-    e.preventDefault()
+export default function Header() {
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    // Pending - Call the server to logout
+    localStorage.removeItem('authtoken')
+    localStorage.removeItem('user')
+    navigate('/login')
   }
 
-  const handleChange = (e) => {
-    setSearchTerm(e.target.value)
-    if(e.target.value === ""){
-      resolveSearch(e.target.value)
-    }
-  }
+  const [cartView, setCartView] = useState(false)
+  const cartContext = useContext(CartContext)
 
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light">
-        <Link className="navbar-brand" to="/">GoFood</Link>
+        <Link className="navbar-brand ms-2" to="/">GoFood</Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -28,21 +29,35 @@ export default function Header({resolveSearch}) {
             <li className="nav-item active">
               <Link className="nav-link" to="/">Home</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">Login</Link>
-            </li>
-            <li className='nav-item'>
-              <Link className='nav-link' to='/signup'>Sign up</Link>
-            </li>
+            {
+              localStorage.getItem('authtoken')
+                ?
+                <li className="nav-item active">
+                  <Link className="nav-link" to="/myorders">My Orders</Link>
+                </li>
+                : ""
+            }
           </ul>
+          {
+            (!localStorage.getItem('authtoken'))
+              ?
+              <div className="d-flex ms-auto">
+                <Link className="btn bg-white text-success me-2" to="/login">Login</Link>
+                <Link className='btn bg-white text-success me-2' to='/signup'>Sign up</Link>
+              </div>
+              : <div className='d-flex ms-auto'>
+                <div className="btn bg-white text-success me-2 position-relative" onClick={() => setCartView(true)}>Cart
+                  {cartContext.cartState.length
+                    ? <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{cartContext.cartState.length}</span>
+                    : ""
+                  }
+                </div>
+                {cartView ? <CartModal onClose={() => setCartView(false)}><Cart /></CartModal> : null}
+                <button className="btn bg-white text-success me-2" onClick={handleLogout}>Logout</button>
+              </div>
+          }
 
-          <form className="d-flex ms-auto" onSubmit={handleSubmit}>
-            <input className="form-control me-2" type="search" 
-            placeholder="Search" aria-label="Search" value={searchTerm} 
-            onChange={handleChange}/>
 
-            {/* <button className="btn btn-outline-success" type="submit">Search</button> */}
-          </form>
         </div>
       </nav>
     </>

@@ -54,8 +54,8 @@ export default function Home() {
     
     return (
         <>
-            <Header resolveSearch={resolveSearch}/>
-            <MainCarousel />
+            <Header />
+            <MainCarousel resolveSearch={resolveSearch}/>
             <div>
                 <div className='container'>
                     {
@@ -71,9 +71,7 @@ export default function Home() {
                                     .map((filteredItem) => {
                                         return(
                                             <div key={filteredItem._id} className='col-12 col-md-6 col-lg-4'>
-                                                <FoodCard itemName={filteredItem.name}
-                                                itemImage ={filteredItem.img}
-                                                itemDescription={filteredItem.description}
+                                                <FoodCard item={filteredItem}
                                                 itemOptions={filteredItem.options[0]}/>
                                             </div>
                                         )

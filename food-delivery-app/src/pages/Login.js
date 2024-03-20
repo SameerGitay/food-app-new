@@ -19,8 +19,10 @@ export default function Login() {
     })
     .then(resonse => {
       if(resonse.data.success){
-        setCredentials({email:"",password:""})
         localStorage.setItem('authtoken',resonse.data.authToken)
+        localStorage.setItem('user',credetials.email)
+
+        setCredentials({email:"",password:""})
         navigate("/")
       }else{
         console.log(resonse.data.msg)
