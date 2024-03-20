@@ -3,6 +3,7 @@ const connectDB = require('./dbConnection')
 const userRouter = require('./routes/userRoutes')
 const appRouter = require('./routes/appRoutes')
 const foodItemRouter = require('./routes/fooditemRoutes')
+const orderRouter = require('./routes/orderRoutes')
 
 connectDB()
 
@@ -25,6 +26,7 @@ app.use(express.json())
 app.use('/api',userRouter)
 app.use('/api',appRouter)
 app.use('/api',foodItemRouter)
+app.use('/api',orderRouter)
 app.listen(port,()=>{
     console.log(`lisetening on port ${port}`)
 })
